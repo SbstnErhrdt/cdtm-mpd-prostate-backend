@@ -4,7 +4,7 @@ from elasticsearch import Elasticsearch
 
 es = Elasticsearch()
 
-api = Namespace("generic_api", description="generic")
+api = Namespace("Generic API", description="The generic api endpoints")
 
 
 class Generic(object):
@@ -12,75 +12,91 @@ class Generic(object):
         self.data = dict
 
     def read_all(self, generic_type):
-        pass
+        response = {}
+        print(generic_type)
+        response["generic_type"] = generic_type
+        return response
 
     def read_single(self, generic_type, uuid):
-        pass
+        response = {}
+        response["generic_type"] = generic_type
+        response["uuid"] = uuid
+        return response
 
     def create(self, generic_type, uuid, data):
-        pass
+        response = {}
+        response["generic_type"] = generic_type
+        response["uuid"] = uuid
+        return response
 
     def update(self, generic_type, uuid, data):
-        pass
+        response = {}
+        response["generic_type"] = generic_type
+        response["uuid"] = uuid
+        return response
 
     def delete(self, generic_type, uuid):
-        pass
+        response = {}
+        response["generic_type"] = generic_type
+        response["uuid"] = uuid
+        return response
 
 
 GEN = Generic()
 
 
 @api.route("/<generic_type>")
+@api.param("generic_type", "The generic type name")
 class GenericList(Resource):
-
-    @api.doc("list_generic")
+    @api.doc("Read all generic objects")
     def get(self, generic_type):
         """
-        List all
+        Read all generic objects
         :return:
         """
         return jsonify(GEN.read_all(generic_type))
 
 
 @api.route("/<generic_type>/<uuid>")
-@api.param("uuid", "The unique identifier")
+@api.param("generic_type", "The generic type name")
+@api.param("uuid", "The unique identifier of the object")
 class GenericSingle(Resource):
-    @api.doc("create_generic")
+    @api.doc("Create a new generic object")
     # @api.route("/:uuid")
     def post(self, generic_type, uuid):
         """
-        Create a new object
+        reate a new generic object
         :param generic_type:
         :param uuid:
         :return:
         """
         return jsonify(GEN.create(generic_type, uuid, api.payload)), 201
 
-    @api.doc("Generic Single Read")
+    @api.doc("Read a single generic object")
     def get(self, generic_type, uuid):
         """
-        Read single
+        Read a single generic object
         :param generic_type:
         :param uuid:
         :return:
         """
         return jsonify(GEN.read_single(generic_type, uuid))
 
-    @api.doc("Generic Update")
+    @api.doc("Update a single generic object")
     def put(self, generic_type, uuid):
         """
-        Update by id
+        Update a single generic object
         :param generic_type:
         :param uuid:
         :return:
         """
         return jsonify(GEN.update(generic_type, uuid, api.payload))
 
-    @api.doc("Generic Delete")
+    @api.doc("Delete a single generic object")
     @api.response(204, "Symptom deleted")
     def delete(self, generic_type, uuid):
         """
-        Delete by id
+        Delete a single generic object
         :param generic_type:
         :param uuid:
         :return:
