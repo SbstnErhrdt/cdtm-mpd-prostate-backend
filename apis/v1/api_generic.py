@@ -30,18 +30,8 @@ class Generic(object):
 GEN = Generic()
 
 
-@api.route("/<str:generic_type>")
+@api.route("/<generic_type>")
 class GenericList(Resource):
-    @api.doc("create_generic")
-    @api.route("/:uuid")
-    def post(self, generic_type, uuid):
-        """
-        Create a new object
-        :param generic_type:
-        :param uuid:
-        :return:
-        """
-        return jsonify(GEN.create(generic_type, uuid, api.payload)), 201
 
     @api.doc("list_generic")
     def get(self, generic_type):
@@ -52,9 +42,20 @@ class GenericList(Resource):
         return jsonify(GEN.read_all(generic_type))
 
 
-@api.route("/<str:generic_type>/<str:uuid>")
+@api.route("/<generic_type>/<uuid>")
 @api.param("uuid", "The unique identifier")
 class GenericSingle(Resource):
+    @api.doc("create_generic")
+    # @api.route("/:uuid")
+    def post(self, generic_type, uuid):
+        """
+        Create a new object
+        :param generic_type:
+        :param uuid:
+        :return:
+        """
+        return jsonify(GEN.create(generic_type, uuid, api.payload)), 201
+
     @api.doc("Generic Single Read")
     def get(self, generic_type, uuid):
         """
