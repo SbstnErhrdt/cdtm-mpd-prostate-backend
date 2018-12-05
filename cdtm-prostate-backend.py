@@ -1,5 +1,4 @@
-from flask import Flask, Blueprint, url_for
-from flask_restplus import Api
+from flask import Flask
 
 from apis.v1 import blueprint as v1
 
