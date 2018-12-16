@@ -26,7 +26,7 @@ class Generic(object):
     def __init__(self):
         self.data = dict
 
-    def read_all(self, generic_index, generic_type, scroll):
+    def read_all(self, generic_index, generic_type, scroll, sort):
         doc = {
             'size': 10000,
             'query': {
@@ -34,7 +34,7 @@ class Generic(object):
             }
         }
         print(generic_index, generic_type)
-        response = es.search(index=generic_index, doc_type=generic_type, body=doc, scroll=scroll)
+        response = es.search(index=generic_index, doc_type=generic_type, body=doc, scroll=scroll, sort=sort)
         return response
 
     def read_single(self, generic_index, generic_type, guid):
@@ -78,8 +78,9 @@ class GenericList(Resource):
         Read all generic objects
         :return:
         """
-        scroll = "1m"
-        return jsonify(GEN.read_all(generic_index, generic_type, scroll))
+        sort = request.args.get('sort', default="", type=str)
+        scroll = request.args.get('scroll', default="1m", type=str)
+        return jsonify(GEN.read_all(generic_index, generic_type, scroll, sort))
 
     @api.doc("Create a new generic object", expect=[fields.Raw])
     # @api.route("/:guid")
