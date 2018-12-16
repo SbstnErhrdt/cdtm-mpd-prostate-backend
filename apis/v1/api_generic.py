@@ -8,9 +8,9 @@ BLACKLIST = {
     "users": True,
 }
 
-ES_HOST = os.environ.get('ELASTIC_SERACH_HOST', None)
-ES_USERNAME = os.environ.get('ELASTIC_SERACH_USERNAME', None)
-ES_PASSWORD = os.environ.get('ELASTIC_SERACH_PASSWORD', None)
+ES_HOST = "elasticsearch.ex-studios.net"#os.environ.get('ELASTIC_SERACH_HOST', None)
+ES_USERNAME = "admin"#os.environ.get('ELASTIC_SERACH_USERNAME', None)
+ES_PASSWORD = "7Jvo5qnAXK2AmzWtTit8R6VYNz2"#os.environ.get('ELASTIC_SERACH_PASSWORD', None)
 
 es = Elasticsearch(
     [ES_HOST],
@@ -112,6 +112,7 @@ class GenericSingle(Resource):
 
     @api.doc("Read a single generic object")
     def get(self, generic_index, generic_type, guid):
+        print(generic_index)
         """
         Read a single generic object
         :param generic_type:
