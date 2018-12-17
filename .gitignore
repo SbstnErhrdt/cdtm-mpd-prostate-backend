@@ -25,3 +25,6 @@ htmlcov/
 *,cover
 .idea
 CREDENTIALS.md
+docker-compose.yml
+*.tar
+static
