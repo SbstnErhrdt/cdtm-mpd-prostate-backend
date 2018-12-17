@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restplus import Api
 from .api_generic import api as generic_api
-
+from .api_user import api as user_api
 blueprint = Blueprint('api', __name__, url_prefix='/api/1')
 
 api = Api(blueprint,
@@ -12,3 +12,4 @@ api = Api(blueprint,
           )
 
 api.add_namespace(generic_api, path='/generic')
+api.add_namespace(user_api, path='/users')
