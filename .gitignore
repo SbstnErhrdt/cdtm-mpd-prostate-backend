@@ -27,4 +27,3 @@ htmlcov/
 CREDENTIALS.md
 docker-compose.yml
 *.tar
-static
