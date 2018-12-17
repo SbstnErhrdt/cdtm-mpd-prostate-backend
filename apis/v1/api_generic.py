@@ -116,6 +116,7 @@ class GenericSingle(Resource):
 
     @api.doc("Read a single generic object")
     def get(self, generic_index, generic_type, guid):
+        print(generic_index)
         """
         Read a single generic object
         :param generic_type:
