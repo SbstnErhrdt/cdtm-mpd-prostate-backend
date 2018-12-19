@@ -51,11 +51,11 @@ class Generic(object):
         # create new guid
         guid = str(uuid.uuid4())
         response = es.index(index=generic_index, doc_type=generic_type, id=guid, body=data)
-        return ""
+        return response
 
     def create(self, generic_index, generic_type, guid, data):
         response = es.index(index=generic_index, doc_type=generic_type, id=guid, body=data)
-        return ""
+        return response
 
     def update(self, generic_index, generic_type, guid, data):
         response = es.update(index=generic_index, doc_type=generic_type, id=guid, body=data)
@@ -95,7 +95,9 @@ class GenericList(Resource):
         :param guid:
         :return:
         """
-        return jsonify(GEN.create_with_guid(generic_index, generic_type, api.payload)), 201
+        response = jsonify(GEN.create_with_guid(generic_index, generic_type, api.payload))
+        response.status_code = 201
+        return response
 
 
 @api.route("/<generic_index>/<generic_type>/<guid>")
@@ -112,7 +114,9 @@ class GenericSingle(Resource):
         :param guid:
         :return:
         """
-        return jsonify(GEN.create(generic_index, generic_type, guid, api.payload)), 201
+        response = jsonify(GEN.create(generic_index, generic_type, guid, api.payload))
+        response.status_code = 201
+        return response
 
     @api.doc("Read a single generic object")
     def get(self, generic_index, generic_type, guid):
