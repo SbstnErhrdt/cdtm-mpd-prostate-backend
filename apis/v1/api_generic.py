@@ -51,11 +51,11 @@ class Generic(object):
         # create new guid
         guid = str(uuid.uuid4())
         response = es.index(index=generic_index, doc_type=generic_type, id=guid, body=data)
-        return response
+        return ""
 
     def create(self, generic_index, generic_type, guid, data):
         response = es.index(index=generic_index, doc_type=generic_type, id=guid, body=data)
-        return response
+        return ""
 
     def update(self, generic_index, generic_type, guid, data):
         response = es.update(index=generic_index, doc_type=generic_type, id=guid, body=data)
