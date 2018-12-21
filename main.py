@@ -1,10 +1,13 @@
 # app.py
 import time
+import gevent.monkey
+
+gevent.monkey.patch_all()
 from flask import Flask, send_from_directory, jsonify
 from flask_socketio import SocketIO
 
 from mvg import get_hauptbahnhof
-from instagram import get_photos
+from owncloud import get_photos
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -27,9 +30,11 @@ def rest_get_mvg():
     return jsonify(response)
 
 
-@app.route("/instagram")
-def rest_get_instagram():
-    return get_photos()
+@app.route("/photos")
+def rest_get_photos():
+    response = dict()
+    response["photos"] = get_photos()
+    return jsonify(response)
 
 
 @app.route("/welcome")
@@ -45,5 +50,4 @@ def socket_welcome_emit(name):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
-    # app.run(debug=True)
+    socketio.run(app, debug=True, port=8080)
