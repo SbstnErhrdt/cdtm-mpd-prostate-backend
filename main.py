@@ -6,8 +6,7 @@ from  apis.v1.api_admin import DbHandler as adminops
 from flask_jwt_extended import JWTManager
 import os
 
-# Env variables
-DEBUG = os.environ.get('DEBUG', True)
+
 
 # Define the static directory
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
@@ -24,10 +23,11 @@ cors = CORS(app)
 app.register_blueprint(v1)
 jwt = JWTManager(app)
 
+# Env variables
+DEBUG = os.environ.get('DEBUG', True)
 ES_HOST = os.environ.get('ELASTIC_SERACH_HOST', None)
 ES_USERNAME = os.environ.get('ELASTIC_SERACH_USERNAME', None)
 ES_PASSWORD = os.environ.get('ELASTIC_SERACH_PASSWORD', None)
-DEBUG = os.environ.get('DEBUG', True)
 
 if ES_HOST is None or ES_USERNAME is None:
     print("No environment parameters set. Please specify")
