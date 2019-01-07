@@ -6,17 +6,6 @@ from elasticsearch import Elasticsearch
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, JWTManager)
 
-ES_HOST = os.environ.get('ELASTIC_SERACH_HOST', None)
-ES_USERNAME = os.environ.get('ELASTIC_SERACH_USERNAME', None)
-ES_PASSWORD = os.environ.get('ELASTIC_SERACH_PASSWORD', None)
-
-es = Elasticsearch(
-    [ES_HOST],
-    http_auth=(ES_USERNAME, ES_PASSWORD),
-    scheme="http",
-    port=80,
-)
-
 api = Namespace("Admin API", description="The Admin api endpoints")
 
 class DbHandler(object):
