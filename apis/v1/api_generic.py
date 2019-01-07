@@ -2,26 +2,11 @@ import os
 import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Namespace, Resource, fields, reqparse
-from elasticsearch import Elasticsearch
+from services.elastic_search import es
 
 BLACKLIST = {
     "users": True,
 }
-
-ES_HOST = os.environ.get('ELASTIC_SERACH_HOST', None)
-ES_USERNAME = os.environ.get('ELASTIC_SERACH_USERNAME', None)
-ES_PASSWORD = os.environ.get('ELASTIC_SERACH_PASSWORD', None)
-
-if ES_HOST is None or ES_USERNAME is None:
-    print("No environment parameters set. Please specify")
-    os._exit(os.EX_NOHOST)
-
-es = Elasticsearch(
-    [ES_HOST],
-    http_auth=(ES_USERNAME, ES_PASSWORD),
-    scheme="http",
-    port=80,
-)
 
 api = Namespace("Generic API", description="The generic api endpoints")
 
