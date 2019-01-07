@@ -24,6 +24,15 @@ cors = CORS(app)
 app.register_blueprint(v1)
 jwt = JWTManager(app)
 
+ES_HOST = os.environ.get('ELASTIC_SERACH_HOST', None)
+ES_USERNAME = os.environ.get('ELASTIC_SERACH_USERNAME', None)
+ES_PASSWORD = os.environ.get('ELASTIC_SERACH_PASSWORD', None)
+DEBUG = os.environ.get('DEBUG', True)
+
+if ES_HOST is None or ES_USERNAME is None:
+    print("No environment parameters set. Please specify")
+    os._exit(os.EX_NOHOST)
+
 
 @app.route('/', methods=['GET'])
 def serve_dir_directory_index():

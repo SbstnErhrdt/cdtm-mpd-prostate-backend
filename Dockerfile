@@ -10,4 +10,4 @@ COPY . .
 CMD [ "python", "./main.py" ]
 
 # Expose ports
-EXPOSE 5000
+EXPOSE 8080
