@@ -126,10 +126,10 @@ class login(Resource):
             return {"msg": "Wrong password"}, 400
 
         token_payload = {
-                         "email": email,
-                         "id": result["_id"],
-                         "roles": result["_source"]["roles"]
-                         }
+            "email": email,
+            "id": result["_id"],
+            "roles": result["_source"]["roles"]
+        }
 
         access_token = create_access_token(identity=token_payload)
 
