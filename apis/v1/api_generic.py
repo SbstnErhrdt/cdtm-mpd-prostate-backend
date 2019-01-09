@@ -1,4 +1,3 @@
-import os
 import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Namespace, Resource, fields, reqparse

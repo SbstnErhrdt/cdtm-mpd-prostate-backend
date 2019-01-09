@@ -1,8 +1,5 @@
-import os
-import uuid
 from flask import Flask, request, jsonify
 from flask_restplus import Namespace, Resource, fields, reqparse
-from elasticsearch import Elasticsearch
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
                                 get_jwt_identity, get_raw_jwt, JWTManager)
