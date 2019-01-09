@@ -64,4 +64,4 @@ if __name__ == '__main__':
         adminops.create_default_admin(data)
 
     # Start the app
-    app.run(debug=DEBUG, port=5000, host='0.0.0.0')
+    app.run(debug=DEBUG, port=5002, host='0.0.0.0')
