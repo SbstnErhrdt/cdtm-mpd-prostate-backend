@@ -53,7 +53,10 @@ if __name__ == '__main__':
     # Create a new admin if not present
     create_admin = os.environ.get("CREATE_ADMIN", None)
     admin_password = os.environ.get("ADMIN_PASSWORD", None)
+    print(create_admin)
+    print(admin_password)
     if create_admin and admin_password:
+        print("I am here")
         data = {
             "name": "default_admin",
             "password": admin_password
