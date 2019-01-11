@@ -27,7 +27,7 @@ class DbHandler(object):
         }
         scroll = "1m"
         try:
-            response = es.search(index="users-index", doc_type="user", body=doc, scroll=scroll, id="default_admin")
+            response = es.search(index="users-index", doc_type="user", body=doc, scroll=scroll, id=data["user_name"])
             if response["hits"]["total"] > 0:
                 # Admin already exists
                 print("Admin already exists")
@@ -36,7 +36,7 @@ class DbHandler(object):
             print("Create new default admin user")
 
         # create the new user
-        resp = es.index(index="users-index", doc_type="user", body=data, id="default_admin")
+        resp = es.index(index="users-index", doc_type="user", body=data, id=data["user_name"])
         return resp
 
     def create_admin(self, data):

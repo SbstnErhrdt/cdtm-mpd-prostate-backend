@@ -56,9 +56,9 @@ if __name__ == '__main__':
     print(create_admin)
     print(admin_password)
     if create_admin and admin_password:
-        print("I am here")
         data = {
-            "name": "default_admin",
+            "user_name":"patient",
+            "name": "patient",
             "password": admin_password
         }
         adminops.create_default_admin(data)

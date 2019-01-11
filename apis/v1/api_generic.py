@@ -26,9 +26,7 @@ class Generic(object):
         return response
 
     def read_single(self, generic_index, generic_type, guid):
-        response = {}
-        response["generic_type"] = generic_type
-        response["guid"] = guid
+        response = es.get(index=generic_index, doc_type=generic_type, id=guid)
         return response
 
     def create_with_guid(self, generic_index, generic_type, data):
