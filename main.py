@@ -6,8 +6,6 @@ from  apis.v1.api_admin import DbHandler as adminops
 from flask_jwt_extended import JWTManager
 import os
 
-
-
 # Define the static directory
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 
@@ -57,11 +55,25 @@ if __name__ == '__main__':
     print(admin_password)
     if create_admin and admin_password:
         data = {
-            "user_name":"patient",
-            "name": "patient",
+            "user_name": "admin",
+            "name": "admin",
             "password": admin_password
         }
         adminops.create_default_admin(data)
+
+        data = {
+            "user_name": "patient",
+            "name": "Oliver Churchill",
+            "password": admin_password
+        }
+        adminops.create_default_patient(data)
+
+        data = {
+            "user_name": "doctor",
+            "name": "Dr. Peter Watt",
+            "password": admin_password
+        }
+        adminops.create_default_doctor(data)
 
     # Start the app
     app.run(debug=DEBUG, port=5001, host='0.0.0.0')

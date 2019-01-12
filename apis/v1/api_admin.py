@@ -39,6 +39,62 @@ class DbHandler(object):
         resp = es.index(index="users-index", doc_type="user", body=data, id=data["user_name"])
         return resp
 
+    @staticmethod
+    def create_default_patient(data):
+        data["roles"] = {
+            "patient": True
+        }
+
+        data["password"] = generate_password_hash(data["password"].encode())
+
+        doc = {
+            'size': 10000,
+            'query': {
+                'match_all': {}
+            }
+        }
+        scroll = "1m"
+        try:
+            response = es.search(index="users-index", doc_type="user", body=doc, scroll=scroll, id=data["user_name"])
+            if response["hits"]["total"] > 0:
+                # Admin already exists
+                print("Default patient already exists")
+                return
+        except:
+            print("Create new default patient user")
+
+        # create the new user
+        resp = es.index(index="users-index", doc_type="user", body=data, id=data["user_name"])
+        return resp
+
+    @staticmethod
+    def create_default_doctor(data):
+        data["roles"] = {
+            "doctor": True
+        }
+
+        data["password"] = generate_password_hash(data["password"].encode())
+
+        doc = {
+            'size': 10000,
+            'query': {
+                'match_all': {}
+            }
+        }
+        scroll = "1m"
+        try:
+            response = es.search(index="users-index", doc_type="user", body=doc, scroll=scroll, id=data["user_name"])
+            if response["hits"]["total"] > 0:
+                # Admin already exists
+                print("Default doctor already exists")
+                return
+        except:
+            print("Create new default doctor user")
+
+        # create the new user
+        resp = es.index(index="users-index", doc_type="user", body=data, id=data["user_name"])
+        return resp
+
     def create_admin(self, data):
         resp = es.index(index="users-index", doc_type="user", body=data)
         return resp

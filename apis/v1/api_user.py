@@ -128,6 +128,7 @@ class login(Resource):
         token_payload = {
             "email": email,
             "id": result["_id"],
+            "name": result["_source"]["name"],
             "roles": result["_source"]["roles"]
         }
 
