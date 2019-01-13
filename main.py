@@ -5,7 +5,7 @@ from apis.v1 import blueprint as v1
 from apis.v1.api_admin import DbHandler as adminops
 from websockets.v1.patients import PatientNamespace
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send
 import os
 
 # Define the static directory
@@ -19,6 +19,13 @@ app.config['SECRET_KEY'] = 'PROCARE-SECRET!'
 socketio = SocketIO(app)
 
 socketio.on_namespace(PatientNamespace('/patients'))
+
+
+@socketio.on('message')
+def handle_message(message):
+    print(message["message"])
+    emit('message', message)
+
 
 # Init cors
 cors = CORS(app)
@@ -60,6 +67,8 @@ if __name__ == '__main__':
     print(create_admin)
     print(admin_password)
     if create_admin and admin_password:
+        # ADMIN
+
         data = {
             "user_name": "admin",
             "name": "admin",
@@ -76,7 +85,7 @@ if __name__ == '__main__':
             "age": 81,
             "stage": 3,
             "remarks": "Forgets his appointments.",
-            "image_url": "/userimages/1.jpg",
+            "image_url": "/userimages/patient1.jpg",
             "phone": "0049 000000",
             "medication": [
                 {
@@ -100,13 +109,13 @@ if __name__ == '__main__':
         adminops.create_default_patient(data)
 
         data = {
-            "user_name": "patient1",
+            "user_name": "patient2",
             "name": "Christian Black",
             "password": admin_password,
             "age": 75,
             "stage": 1,
             "remarks": "Needs a cab home.",
-            "image_url": "/userimages/2.jpg",
+            "image_url": "/userimages/patient2.jpg",
             "email": "test@cdtm.de",
             "phone": "0049 000000",
             "medication": [
@@ -137,7 +146,7 @@ if __name__ == '__main__':
             "age": 85,
             "stage": 4,
             "remarks": "Inform son about progress.",
-            "image_url": "/userimages/3.jpg",
+            "image_url": "/userimages/patient3.jpg",
             "phone": "0049 000000",
             "medication": [
                 {
@@ -167,7 +176,7 @@ if __name__ == '__main__':
             "age": 81,
             "stage": 4,
             "remarks": "Talk with his wife about driving.",
-            "image_url": "/userimages/4.jpg",
+            "image_url": "/userimages/patient4.jpg",
             "phone": "0049 000000",
             "medication": [
                 {
@@ -197,7 +206,7 @@ if __name__ == '__main__':
             "age": 51,
             "stage": 2,
             "remarks": "Inform relatives about options.",
-            "image_url": "/userimages/5.jpg",
+            "image_url": "/userimages/5patient5.jpg",
             "email": "test@cdtm.de",
             "phone": "0049 000000",
             "medication": [
