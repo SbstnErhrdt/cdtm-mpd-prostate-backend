@@ -1,11 +1,13 @@
 import os
+
+import datetime
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from apis.v1 import blueprint as v1
 from apis.v1.api_admin import DbHandler as adminops
 from websockets.v1.patients import PatientNamespace
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO, emit, send
+from flask_socketio import SocketIO, emit, send, join_room
 import os
 
 # Define the static directory
@@ -26,6 +28,8 @@ def handle_message(message):
     print(message["message"])
     emit('message', message)
 
+
+connected_particpants = {}
 
 # Init cors
 cors = CORS(app)
@@ -59,6 +63,56 @@ def serve_file_in_dir(path):
     return send_from_directory(static_file_dir, path)
 
 
+def write_log(s):
+    with open('logfile.out', 'a+') as f:
+        f.write('time: %s Action: %s \n' % (str(datetime.datetime.now()), s))
+
+
+@app.route('/video')
+def index():
+    """Serve index page"""
+    return render_template('video.html', room='default')
+
+
+@socketio.on('message', namespace='/')
+def messgage(sid, data):
+    socketio.emit('message', data=data)
+
+
+@socketio.on('disconnect', namespace='/')
+def disconnect(sid):
+    write_log("Received Disconnect message from %s" % sid)
+    for room, clients in connected_particpants.items():
+        try:
+            clients.remove(sid)
+            write_log("Removed %s from %s \n list of left participants is %s" % (sid, room, clients))
+        except ValueError:
+            write_log("Remove %s from %s \n list of left participants is %s has failed" % (sid, room, clients))
+
+
+@socketio.on('create or join', namespace='/')
+def create_or_join(sid, data):
+    join_room(data, sid=sid)
+    try:
+        connected_particpants[data].append(sid)
+    except KeyError:
+        connected_particpants[data] = [sid]
+    numClients = len(connected_particpants[data])
+    if numClients == 1:
+        socketio.emit('created', data)
+    elif numClients > 2:
+        socketio.emit('full')
+    elif numClients == 2:
+        socketio.emit('joined')
+        socketio.emit('join')
+    print(sid, data, len(connected_particpants[data]))
+
+
+@app.route('/video/<room>')
+def room(room):
+    return render_template('video.html', room=room)
+
+
 @app.after_request
 def add_header(r):
     """
@@ -69,6 +123,7 @@ def add_header(r):
     r.headers["Pragma"] = "no-cache"
     r.headers["Expires"] = "0"
     return r
+
 
 if __name__ == '__main__':
 
@@ -90,7 +145,7 @@ if __name__ == '__main__':
         # PATIENTS
 
         data = {
-            "user_name": "patient",
+            "user_name": "patient1",
             "name": "Oliver Churchill",
             "password": admin_password,
             "age": 81,
@@ -101,12 +156,12 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Sipuleucel-T",
-                    "take": "2 times a day (morning, evening)",
+                    "take": "1-0-1-0",
                     "amount": "4 mg",
                 },
                 {
                     "name": "Zoladex (Goserelin Acetate)",
-                    "take": "1 time a day (morning)",
+                    "take": "1-0-1-0",
                     "amount": "1 mg",
                 }
             ],
@@ -132,12 +187,12 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
-                    "take": "2 times a day (morning, evening)",
+                    "take": "1-0-1-0",
                     "amount": "5 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "take": "1 time a day (morning)",
+                    "take": "1-0-1-0",
                     "amount": "8 mg",
                 }
             ],
@@ -162,12 +217,12 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
-                    "take": "2 times a day (morning, evening)",
+                    "take": "1-0-1-0",
                     "amount": "1 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "take": "1 time a day (morning)",
+                    "take": "1-0-1-0",
                     "amount": "5 mg",
                 }
             ],
@@ -192,12 +247,12 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
-                    "take": "2 times a day (morning, evening)",
+                    "take": "1-0-1-0",
                     "amount": "1 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "take": "1 time a day (morning)",
+                    "take": "1-0-1-0",
                     "amount": "7 mg",
                 }
             ],
@@ -217,18 +272,18 @@ if __name__ == '__main__':
             "age": 51,
             "stage": 2,
             "remarks": "Inform relatives about options.",
-            "image_url": "/userimages/5patient5.jpg",
+            "image_url": "/userimages/patient5.jpg",
             "email": "test@cdtm.de",
             "phone": "0049 000000",
             "medication": [
                 {
                     "name": "Degarelix",
-                    "take": "2 times a day (morning, evening)",
+                    "take": "1-0-1-0",
                     "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "take": "1 time a day (morning)",
+                    "take": "1-0-1-0",
                     "amount": "4 mg",
                 }
             ],
