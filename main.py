@@ -61,17 +61,166 @@ if __name__ == '__main__':
         }
         adminops.create_default_admin(data)
 
+        # PATIENTS
+
         data = {
             "user_name": "patient",
             "name": "Oliver Churchill",
-            "password": admin_password
+            "password": admin_password,
+            "age": 81,
+            "stage": 3,
+            "remarks": "Forgets his appointments.",
+            "image_url": "/userimages/1.jpg",
+            "phone": "0049 000000",
+            "medication": [
+                {
+                    "name": "Sipuleucel-T",
+                    "take": "2 times a day (morning, evening)",
+                    "amount": "4 mg",
+                },
+                {
+                    "name": "Zoladex (Goserelin Acetate)",
+                    "take": "1 time a day (morning)",
+                    "amount": "1 mg",
+                }
+            ],
+            "doctors": [
+                {
+                    "name": "Dr. Peter Watt",
+                    "id": "doctor"
+                }
+            ]
         }
         adminops.create_default_patient(data)
 
         data = {
+            "user_name": "patient1",
+            "name": "Christian Black",
+            "password": admin_password,
+            "age": 75,
+            "stage": 1,
+            "remarks": "Needs a cab home.",
+            "image_url": "/userimages/2.jpg",
+            "email": "test@cdtm.de",
+            "phone": "0049 000000",
+            "medication": [
+                {
+                    "name": "Degarelix",
+                    "take": "2 times a day (morning, evening)",
+                    "amount": "5 mg",
+                },
+                {
+                    "name": "Leuprolide Acetate",
+                    "take": "1 time a day (morning)",
+                    "amount": "8 mg",
+                }
+            ],
+            "doctors": [
+                {
+                    "name": "Dr. Peter Watt",
+                    "id": "doctor"
+                }
+            ]
+        }
+        adminops.create_default_patient(data)
+
+        data = {
+            "user_name": "patient3",
+            "name": "Rudolph Bean",
+            "password": admin_password,
+            "age": 85,
+            "stage": 4,
+            "remarks": "Inform son about progress.",
+            "image_url": "/userimages/3.jpg",
+            "phone": "0049 000000",
+            "medication": [
+                {
+                    "name": "Degarelix",
+                    "take": "2 times a day (morning, evening)",
+                    "amount": "1 mg",
+                },
+                {
+                    "name": "Leuprolide Acetate",
+                    "take": "1 time a day (morning)",
+                    "amount": "5 mg",
+                }
+            ],
+            "doctors": [
+                {
+                    "name": "Dr. Peter Watt",
+                    "id": "doctor"
+                }
+            ]
+        }
+        adminops.create_default_patient(data)
+
+        data = {
+            "user_name": "patient4",
+            "name": "Thomas Simpson",
+            "password": admin_password,
+            "age": 81,
+            "stage": 4,
+            "remarks": "Talk with his wife about driving.",
+            "image_url": "/userimages/4.jpg",
+            "phone": "0049 000000",
+            "medication": [
+                {
+                    "name": "Degarelix",
+                    "take": "2 times a day (morning, evening)",
+                    "amount": "1 mg",
+                },
+                {
+                    "name": "Leuprolide Acetate",
+                    "take": "1 time a day (morning)",
+                    "amount": "7 mg",
+                }
+            ],
+            "doctors": [
+                {
+                    "name": "Dr. Peter Watt",
+                    "id": "doctor"
+                }
+            ]
+        }
+        adminops.create_default_patient(data)
+
+        data = {
+            "user_name": "patient5",
+            "name": "Bradley Stark",
+            "password": admin_password,
+            "age": 51,
+            "stage": 2,
+            "remarks": "Inform relatives about options.",
+            "image_url": "/userimages/5.jpg",
+            "email": "test@cdtm.de",
+            "phone": "0049 000000",
+            "medication": [
+                {
+                    "name": "Degarelix",
+                    "take": "2 times a day (morning, evening)",
+                    "amount": "4 mg",
+                },
+                {
+                    "name": "Leuprolide Acetate",
+                    "take": "1 time a day (morning)",
+                    "amount": "4 mg",
+                }
+            ],
+            "doctors": [
+                {
+                    "name": "Dr. Peter Watt",
+                    "id": "doctor"
+                }
+            ]
+        }
+        adminops.create_default_patient(data)
+
+        # DOCTORS
+
+        data = {
             "user_name": "doctor",
             "name": "Dr. Peter Watt",
-            "password": admin_password
+            "password": admin_password,
         }
         adminops.create_default_doctor(data)
 
