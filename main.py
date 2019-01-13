@@ -2,8 +2,10 @@ import os
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from apis.v1 import blueprint as v1
-from  apis.v1.api_admin import DbHandler as adminops
+from apis.v1.api_admin import DbHandler as adminops
+from websockets.v1.patients import PatientNamespace
 from flask_jwt_extended import JWTManager
+from flask_socketio import SocketIO, emit
 import os
 
 # Define the static directory
@@ -13,6 +15,10 @@ static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'sta
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'change-this-key-later-read-from-an-env-variable'
 app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['SECRET_KEY'] = 'PROCARE-SECRET!'
+socketio = SocketIO(app)
+
+socketio.on_namespace(PatientNamespace('/patients'))
 
 # Init cors
 cors = CORS(app)
@@ -225,4 +231,4 @@ if __name__ == '__main__':
         adminops.create_default_doctor(data)
 
     # Start the app
-    app.run(debug=DEBUG, port=5001, host='0.0.0.0')
+    socketio.run(app, debug=DEBUG, port=5001, host='0.0.0.0')
