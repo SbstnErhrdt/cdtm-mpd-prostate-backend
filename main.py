@@ -1,13 +1,11 @@
 import os
-
-import datetime
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from apis.v1 import blueprint as v1
 from apis.v1.api_admin import DbHandler as adminops
 from websockets.v1.patients import PatientNamespace
 from flask_jwt_extended import JWTManager
-from flask_socketio import SocketIO, emit, send, join_room
+from flask_socketio import SocketIO, emit, send
 import os
 
 # Define the static directory
@@ -18,6 +16,7 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'change-this-key-later-read-from-an-env-variable'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['SECRET_KEY'] = 'PROCARE-SECRET!'
+app.config['JWT_EXPIRATION_DELTA'] = 3000
 socketio = SocketIO(app)
 
 socketio.on_namespace(PatientNamespace('/patients'))
@@ -28,8 +27,6 @@ def handle_message(message):
     print(message["message"])
     emit('message', message)
 
-
-connected_particpants = {}
 
 # Init cors
 cors = CORS(app)
@@ -61,56 +58,6 @@ def serve_file_in_dir(path):
         return send_from_directory(static_file_dir, 'index.html')
 
     return send_from_directory(static_file_dir, path)
-
-
-def write_log(s):
-    with open('logfile.out', 'a+') as f:
-        f.write('time: %s Action: %s \n' % (str(datetime.datetime.now()), s))
-
-
-@app.route('/video')
-def index():
-    """Serve index page"""
-    return render_template('video.html', room='default')
-
-
-@socketio.on('message', namespace='/')
-def messgage(sid, data):
-    socketio.emit('message', data=data)
-
-
-@socketio.on('disconnect', namespace='/')
-def disconnect(sid):
-    write_log("Received Disconnect message from %s" % sid)
-    for room, clients in connected_particpants.items():
-        try:
-            clients.remove(sid)
-            write_log("Removed %s from %s \n list of left participants is %s" % (sid, room, clients))
-        except ValueError:
-            write_log("Remove %s from %s \n list of left participants is %s has failed" % (sid, room, clients))
-
-
-@socketio.on('create or join', namespace='/')
-def create_or_join(sid, data):
-    join_room(data, sid=sid)
-    try:
-        connected_particpants[data].append(sid)
-    except KeyError:
-        connected_particpants[data] = [sid]
-    numClients = len(connected_particpants[data])
-    if numClients == 1:
-        socketio.emit('created', data)
-    elif numClients > 2:
-        socketio.emit('full')
-    elif numClients == 2:
-        socketio.emit('joined')
-        socketio.emit('join')
-    print(sid, data, len(connected_particpants[data]))
-
-
-@app.route('/video/<room>')
-def room(room):
-    return render_template('video.html', room=room)
 
 
 @app.after_request
@@ -155,14 +102,16 @@ if __name__ == '__main__':
             "phone": "0049 000000",
             "medication": [
                 {
-                    "name": "Sipuleucel-T",
+                    "name": "Degarelix",
+                    "short_name": "degarelix",
                     "take": "1-0-1-0",
                     "amount": "4 mg",
                 },
                 {
-                    "name": "Zoladex (Goserelin Acetate)",
+                    "name": "Leuprolide Acetate",
+                    "short_name": "leuprolide_acetate",
                     "take": "1-0-1-0",
-                    "amount": "1 mg",
+                    "amount": "4 mg",
                 }
             ],
             "doctors": [
@@ -187,13 +136,15 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
+                    "short_name": "degarelix",
                     "take": "1-0-1-0",
-                    "amount": "5 mg",
+                    "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
+                    "short_name": "leuprolide_acetate",
                     "take": "1-0-1-0",
-                    "amount": "8 mg",
+                    "amount": "4 mg",
                 }
             ],
             "doctors": [
@@ -217,13 +168,15 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
+                    "short_name": "degarelix",
                     "take": "1-0-1-0",
-                    "amount": "1 mg",
+                    "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
+                    "short_name": "leuprolide_acetate",
                     "take": "1-0-1-0",
-                    "amount": "5 mg",
+                    "amount": "4 mg",
                 }
             ],
             "doctors": [
@@ -247,13 +200,15 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
+                    "short_name": "degarelix",
                     "take": "1-0-1-0",
-                    "amount": "1 mg",
+                    "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
+                    "short_name": "leuprolide_acetate",
                     "take": "1-0-1-0",
-                    "amount": "7 mg",
+                    "amount": "4 mg",
                 }
             ],
             "doctors": [
@@ -278,11 +233,13 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
+                    "short_name": "degarelix",
                     "take": "1-0-1-0",
                     "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
+                    "short_name": "leuprolide_acetate",
                     "take": "1-0-1-0",
                     "amount": "4 mg",
                 }

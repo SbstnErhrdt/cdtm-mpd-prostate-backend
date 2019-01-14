@@ -64,6 +64,7 @@ class GenericList(Resource):
         Read all generic objects
         :return:
         """
+
         sort = request.args.get('sort', default="", type=str)
         scroll = request.args.get('scroll', default="1m", type=str)
         return jsonify(GEN.read_all(generic_index, generic_type, scroll, sort))
@@ -80,6 +81,7 @@ class GenericList(Resource):
         response = jsonify(GEN.create_with_guid(generic_index, generic_type, api.payload))
         response.status_code = 201
         return response
+
 
 
 @api.route("/<generic_index>/<generic_type>/<guid>")

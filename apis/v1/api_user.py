@@ -129,7 +129,8 @@ class login(Resource):
             "email": email,
             "id": result["_id"],
             "name": result["_source"]["name"],
-            "roles": result["_source"]["roles"]
+            "roles": result["_source"]["roles"],
+            "image_url": result["_source"]["image_url"]
         }
 
         access_token = create_access_token(identity=token_payload)
