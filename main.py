@@ -1,4 +1,6 @@
 import os
+
+import datetime
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 from apis.v1 import blueprint as v1
@@ -16,7 +18,7 @@ app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'change-this-key-later-read-from-an-env-variable'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['SECRET_KEY'] = 'PROCARE-SECRET!'
-app.config['JWT_EXPIRATION_DELTA'] = 3000
+app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=30)
 socketio = SocketIO(app)
 
 socketio.on_namespace(PatientNamespace('/patients'))
@@ -24,8 +26,8 @@ socketio.on_namespace(PatientNamespace('/patients'))
 
 @socketio.on('message')
 def handle_message(message):
-    print(message["message"])
-    emit('message', message)
+    print(message)
+    emit('message', message, broadcast=True)
 
 
 # Init cors
@@ -103,14 +105,14 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
-                    "short_name": "degarelix",
-                    "take": "1-0-1-0",
+                    "short_name": "red",
+                    "take": "2-1-1-0",
                     "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "short_name": "leuprolide_acetate",
-                    "take": "1-0-1-0",
+                    "short_name": "blue",
+                    "take": "1-0-1-1",
                     "amount": "4 mg",
                 }
             ],
@@ -136,13 +138,13 @@ if __name__ == '__main__':
             "medication": [
                 {
                     "name": "Degarelix",
-                    "short_name": "degarelix",
+                    "short_name": "red",
                     "take": "1-0-1-0",
                     "amount": "4 mg",
                 },
                 {
                     "name": "Leuprolide Acetate",
-                    "short_name": "leuprolide_acetate",
+                    "short_name": "blue",
                     "take": "1-0-1-0",
                     "amount": "4 mg",
                 }
@@ -258,6 +260,7 @@ if __name__ == '__main__':
         data = {
             "user_name": "doctor",
             "name": "Dr. Peter Watt",
+            "image_url": "/userimages/doctor.jpg",
             "password": admin_password,
         }
         adminops.create_default_doctor(data)
