@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, request, jsonify
 from flask_restplus import Namespace, Resource, fields, reqparse
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -133,7 +134,7 @@ class login(Resource):
             "image_url": result["_source"]["image_url"]
         }
 
-        access_token = create_access_token(identity=token_payload)
+        access_token = create_access_token(identity=token_payload, expires_delta=datetime.timedelta(days=30))
 
         return {"access_token": access_token}, 200
 

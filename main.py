@@ -94,8 +94,8 @@ if __name__ == '__main__':
         # PATIENTS
 
         data = {
-            "user_name": "patient1",
-            "name": "Oliver Churchill",
+            "user_name": "a_khan",
+            "name": "Amjad Khan",
             "password": admin_password,
             "age": 81,
             "stage": 3,
@@ -266,4 +266,5 @@ if __name__ == '__main__':
         adminops.create_default_doctor(data)
 
     # Start the app
-    socketio.run(app, debug=DEBUG, port=5001, host='0.0.0.0')
+    port = int(os.environ.get('PORT', 5001))
+    socketio.run(app, debug=DEBUG, port=port, host='0.0.0.0')
