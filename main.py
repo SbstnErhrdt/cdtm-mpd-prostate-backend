@@ -94,8 +94,8 @@ if __name__ == '__main__':
         # PATIENTS
 
         data = {
-            "user_name": "a_khan",
-            "name": "Amjad Khan",
+            "user_name": "w_miller",
+            "name": "Winston Miller",
             "password": admin_password,
             "age": 81,
             "stage": 3,
@@ -118,7 +118,7 @@ if __name__ == '__main__':
             ],
             "doctors": [
                 {
-                    "name": "Dr. Peter Watt",
+                    "name": "Dr. David Williams",
                     "id": "doctor"
                 }
             ]
@@ -194,8 +194,8 @@ if __name__ == '__main__':
             "user_name": "patient4",
             "name": "Thomas Simpson",
             "password": admin_password,
-            "age": 81,
-            "stage": 4,
+            "age": 77,
+            "stage": 1,
             "remarks": "Talk with his wife about driving.",
             "image_url": "/userimages/patient4.jpg",
             "phone": "0049 000000",
@@ -258,8 +258,8 @@ if __name__ == '__main__':
         # DOCTORS
 
         data = {
-            "user_name": "doctor",
-            "name": "Dr. Peter Watt",
+            "user_name": "d_williams",
+            "name": "Dr. David Williams",
             "image_url": "/userimages/doctor.jpg",
             "password": admin_password,
         }
