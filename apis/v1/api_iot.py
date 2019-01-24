@@ -67,7 +67,7 @@ def process(request):
     request["action"] = "delete"
     time.sleep(10)
     print("emit totake")
-    emit('medication', generate_event(request, "totaken"), namespace="", broadcast=True)
+    emit('medication', generate_event(request, "totake"), namespace="", broadcast=True)
     print("done")
 
 
