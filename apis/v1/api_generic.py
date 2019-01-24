@@ -83,7 +83,6 @@ class GenericList(Resource):
         return response
 
 
-
 @api.route("/<generic_index>/<generic_type>/<guid>")
 @api.param("generic_index", "The generic index")
 @api.param("generic_type", "The generic type name")

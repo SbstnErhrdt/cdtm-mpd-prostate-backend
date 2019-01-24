@@ -3,9 +3,8 @@ import os
 import datetime
 from flask import Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
-from apis.v1 import blueprint as v1
+from apis.v1 import bp as v1
 from apis.v1.api_admin import DbHandler as adminops
-from websockets.v1.patients import PatientNamespace
 from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO, emit, send
 import os
@@ -19,9 +18,7 @@ app.config['JWT_SECRET_KEY'] = 'change-this-key-later-read-from-an-env-variable'
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['SECRET_KEY'] = 'PROCARE-SECRET!'
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=30)
-socketio = SocketIO(app)
-
-socketio.on_namespace(PatientNamespace('/patients'))
+socketio = SocketIO(app, async_mode="threading")
 
 
 @socketio.on('message')
@@ -97,7 +94,7 @@ if __name__ == '__main__':
             "user_name": "w_miller",
             "name": "Winston Miller",
             "password": admin_password,
-            "age": 81,
+            "age": 80,
             "stage": 3,
             "remarks": "Forgets his appointments.",
             "image_url": "/userimages/patient1.jpg",
