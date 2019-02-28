@@ -1,0 +1,1 @@
+docker run -p 0.0.0.0:5001:5001 prostate-backend
